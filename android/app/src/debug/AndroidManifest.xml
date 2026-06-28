@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+SPDX-FileCopyrightText: 2026 Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+      INTERNET *solo* en builds DEBUG: el Dart VM Service (hot reload y DevTools)
+      escucha en un socket local. Android sobrescribe (merge) este manifest solo
+      para el buildType debug; NUNCA se fusiona en release. El APK que recibe el
+      usuario final / F-Droid permanece SIN permiso de red. Garantía Local-First.
+    -->
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>

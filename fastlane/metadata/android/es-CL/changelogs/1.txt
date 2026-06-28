@@ -1,0 +1,1 @@
+Primera versión: registro de eventos y widget de cuenta regresiva local.

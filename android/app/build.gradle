@@ -1,0 +1,75 @@
+// SPDX-FileCopyrightText: 2026 Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+// versionCode/versionName provienen de pubspec.yaml (Flutter los inyecta en
+// local.properties). La fuente de verdad del applicationId es tool/.app_id.
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode") ?: "1"
+def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "0.1.0"
+
+android {
+    namespace = "cl.exetrujillo.kalendaryo"
+    compileSdk = 34
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    defaultConfig {
+        applicationId = "cl.exetrujillo.kalendaryo"
+        minSdk = 23
+        targetSdk = 34
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+    }
+
+    // Reproducible Builds (F-Droid): por defecto AGP incrusta en el APK un bloque
+    // de metadatos de dependencias FIRMADO POR GOOGLE. Es un blob no libre, opaco
+    // y NO determinista (varía entre máquinas), que rompería la verificación byte
+    // a byte de F-Droid. Lo excluimos por completo.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
+    buildTypes {
+        release {
+            // Firma con la clave de debug SOLO para `flutter run --release` local.
+            // F-Droid reconstruye y firma con SU propia clave; aquí NO se incrusta
+            // ningún keystore propio. Sin minify/shrink => build reproducible y
+            // auditable byte a byte por F-Droid.
+            signingConfig = signingConfigs.debug
+            minifyEnabled = false
+            shrinkResources = false
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    // Red de seguridad del refresco diario del widget. WorkManager (AndroidX) cae
+    // a JobScheduler/AlarmManager: NO requiere Google Play Services ni red.
+    implementation "androidx.work:work-runtime-ktx:2.9.0"
+}

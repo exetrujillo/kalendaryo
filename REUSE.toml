@@ -1,0 +1,34 @@
+version = 1
+SPDX-PackageName = "Kalendaryo"
+SPDX-PackageSupplier = "Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>"
+SPDX-PackageDownloadLocation = "https://github.com/exetrujillo/kalendaryo"
+
+# Archivos sin cabecera propia (binarios, metadatos, generados) heredan la
+# licencia desde aquí, de modo que `reuse lint` pase en verde sin contaminar
+# binarios con texto legal. El código fuente lleva su cabecera SPDX inline.
+
+[[annotations]]
+path = [
+  "LICENSE",
+  "tool/.app_id",
+  "fastlane/metadata/**",
+  "pubspec.lock",
+  "**/*.png",
+  "**/*.webp",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# El Gradle Wrapper es código de Gradle Inc. (Apache-2.0), no nuestro: se
+# distribuye verbatim para arrancar el build sin una instalación previa de Gradle.
+[[annotations]]
+path = [
+  "android/gradlew",
+  "android/gradlew.bat",
+  "android/gradle/wrapper/gradle-wrapper.jar",
+  "android/gradle/wrapper/gradle-wrapper.properties",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Gradle Inc."
+SPDX-License-Identifier = "Apache-2.0"

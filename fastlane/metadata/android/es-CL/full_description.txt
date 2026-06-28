@@ -1,0 +1,24 @@
+Kalendaryo es una aplicación de cuenta regresiva de eventos diseñada bajo la
+filosofía del Software Libre y "Local-First" estricto.
+
+Registra tus fechas importantes y coloca un widget en la pantalla de inicio que
+muestra cuántos días faltan para el próximo evento. El widget se actualiza solo,
+a medianoche, mediante mecanismos nativos del sistema (AlarmManager), sin gastar
+batería en servicios persistentes ni datos en conexiones de red.
+
+CARACTERÍSTICAS:
+
+* Sin registro, sin cuentas, sin nube.
+* Sin conexión a internet (la app no pide el permiso de red).
+* Sin rastreadores ni telemetría.
+* Datos almacenados de forma cifrada en tu dispositivo (SQLCipher).
+* Widget de pantalla de inicio con actualización diaria eficiente.
+
+PRIVACIDAD:
+
+Tus eventos nunca salen de tu teléfono. No hay servidor al que enviarlos.
+
+LICENCIA:
+
+Software Libre bajo GNU GPL v3 o posterior. Las 4 libertades garantizadas.
+Código fuente disponible.

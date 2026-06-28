@@ -1,0 +1,1 @@
+Cuenta regresiva de eventos en tu pantalla de inicio. 100% local y libre.

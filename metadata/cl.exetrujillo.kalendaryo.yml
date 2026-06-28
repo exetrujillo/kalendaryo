@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2026 Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# BORRADOR de receta de compilación para F-Droid.
+# Destino final: fdroiddata/metadata/cl.exetrujillo.kalendaryo.yml
+# Documentación: https://f-droid.org/docs/Build_Metadata_Reference/
+
+Categories:
+  - Time
+License: GPL-3.0-or-later
+AuthorName: Exequiel Trujillo
+WebSite: https://kalendaryo.exetrujillo.cl
+SourceCode: https://github.com/exetrujillo/kalendaryo
+IssueTracker: https://github.com/exetrujillo/kalendaryo/issues
+Changelog: https://github.com/exetrujillo/kalendaryo/blob/main/CHANGELOG.md
+
+# Sin anti-features: app puramente libre, sin red, sin trackers, sin blobs.
+AntiFeatures: []
+
+RepoType: git
+Repo: https://github.com/exetrujillo/kalendaryo.git
+
+Builds:
+  - versionName: 0.1.0
+    versionCode: 1
+    commit: v0.1.0
+    # SIN subdir: el proyecto Flutter (pubspec.yaml) vive en la raíz del repo, que
+    # es donde `flutter build` debe ejecutarse. `output` es relativo a esa raíz.
+    output: build/app/outputs/flutter-apk/app-release.apk
+    srclibs:
+      - flutter@stable
+    rm:
+      - android/app/google-services.json   # garantía: no debe existir
+    prebuild:
+      - $$flutter$$/bin/flutter config --no-analytics
+      - $$flutter$$/bin/flutter pub get
+    build:
+      - $$flutter$$/bin/flutter build apk --release
+
+# Habilita actualizaciones automáticas de versión leyendo pubspec.yaml.
+AutoUpdateMode: Version v%v
+UpdateCheckMode: Tags
+CurrentVersion: 0.1.0
+CurrentVersionCode: 1
