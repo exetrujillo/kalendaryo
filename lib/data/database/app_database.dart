@@ -20,6 +20,11 @@ part 'app_database.g.dart'; // Generado por build_runner (no se versiona).
 /// día como entero (días desde epoch en hora local) para que ordenar y filtrar
 /// "próximos eventos" sea un simple índice entero, sin aritmética de fechas en
 /// SQL ni dependencias de zona horaria del motor.
+///
+/// `@DataClassName('EventsData')`: sin esto, drift nombraría la clase de fila
+/// `Event` (singular de la tabla), colisionando con la entidad de dominio
+/// `Event`. La renombramos para mantener separadas la capa de datos y el dominio.
+@DataClassName('EventsData')
 class Events extends Table {
   IntColumn get id => integer().autoIncrement()();
 
