@@ -34,6 +34,9 @@ Builds:
     prebuild:
       - $$flutter$$/bin/flutter config --no-analytics
       - $$flutter$$/bin/flutter pub get
+      # app_database.g.dart (drift) está gitignored: hay que generarlo antes de
+      # compilar, o el build falla por el `part` que no encuentra el archivo.
+      - $$flutter$$/bin/dart run build_runner build --delete-conflicting-outputs
     build:
       - $$flutter$$/bin/flutter build apk --release
 

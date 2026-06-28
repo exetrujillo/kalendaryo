@@ -28,6 +28,11 @@ jobs:
           channel: stable
 
       - run: flutter pub get
+
+      # Genera el código de drift (app_database.g.dart). Está gitignored, así que
+      # DEBE regenerarse aquí antes de analizar/compilar.
+      - run: dart run build_runner build --delete-conflicting-outputs
+
       - run: flutter analyze
       - run: flutter test
 

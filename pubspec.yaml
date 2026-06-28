@@ -16,6 +16,7 @@ dependencies:
 
   # Persistencia local cifrada (todo FOSS, sin servicios del SO propietarios)
   drift: ^2.18.0
+  sqlite3: ^2.4.0 # API `open.overrideFor`/`OperatingSystem` (open.dart) p/ SQLCipher
   sqlite3_flutter_libs: ^0.5.20
   sqlcipher_flutter_libs: ^0.6.0 # SQLCipher: cifrado AES-256 de la BD
   flutter_secure_storage: ^9.2.0 # Guarda la clave en el Android Keystore
