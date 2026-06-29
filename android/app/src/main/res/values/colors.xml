@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+SPDX-FileCopyrightText: 2026 Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>
+SPDX-License-Identifier: GPL-3.0-or-later
+-->
+<resources>
+    <!-- Fondo del icono adaptativo (azul). -->
+    <color name="ic_launcher_background">#1565C0</color>
+</resources>

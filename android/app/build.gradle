@@ -22,7 +22,9 @@ def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "
 
 android {
     namespace = "cl.exetrujillo.kalendaryo"
-    compileSdk = 34
+    // compileSdk 35: lo exigen plugins transitivos (jni, sqlite3_flutter_libs).
+    // Es retrocompatible; targetSdk se mantiene en 34 (comportamiento en runtime).
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
