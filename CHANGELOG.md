@@ -11,6 +11,13 @@ Todas las modificaciones notables se documentan aquí. El formato sigue
 
 ## [No publicado]
 
+## [0.1.1] - 2026-06-29
+
+### Corregido
+- La base de datos no abría en el dispositivo (`Failed to load dynamic library
+  libsqlite3.so`): el override a SQLCipher se aplicaba en el isolate principal,
+  pero `createInBackground` abre la BD en otro isolate. Movido a `isolateSetup`.
+
 ## [0.1.0] - 2026-06-28
 
 ### Añadido

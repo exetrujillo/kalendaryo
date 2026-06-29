@@ -71,16 +71,22 @@ class AppDatabase extends _$AppDatabase {
   /// en disco en claro ni en código.
   static LazyDatabase openConnection() {
     return LazyDatabase(() async {
-      // Carga las librerías nativas de SQLCipher en lugar de SQLite estándar.
-      await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
-      open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
-
+      // path_provider y el Keystore requieren el isolate principal (platform
+      // channels), así que se resuelven aquí.
       final dir = await getApplicationDocumentsDirectory();
       final dbFile = File(p.join(dir.path, 'kalendaryo.db'));
       final key = await _resolveEncryptionKey();
 
       return NativeDatabase.createInBackground(
         dbFile,
+        // createInBackground abre la BD en OTRO isolate y el override de `open`
+        // es por-isolate: hacerlo en el principal NO afecta al de fondo, que
+        // entonces intenta cargar libsqlite3.so (inexistente; solo empaquetamos
+        // SQLCipher). Por eso apuntamos a SQLCipher AQUÍ, donde se abre de verdad.
+        isolateSetup: () async {
+          await applyWorkaroundToOpenSqlCipherOnOldAndroidVersions();
+          open.overrideFor(OperatingSystem.android, openCipherOnAndroid);
+        },
         setup: (rawDb) {
           // PRAGMA key DEBE ser lo primero tras abrir la conexión.
           rawDb.execute("PRAGMA key = '$key';");

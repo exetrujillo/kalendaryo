@@ -21,9 +21,9 @@ RepoType: git
 Repo: https://github.com/exetrujillo/kalendaryo.git
 
 Builds:
-  - versionName: 0.1.0
-    versionCode: 1
-    commit: v0.1.0
+  - versionName: 0.1.1
+    versionCode: 2
+    commit: v0.1.1
     # SIN subdir: el proyecto Flutter (pubspec.yaml) vive en la raíz del repo, que
     # es donde `flutter build` debe ejecutarse. `output` es relativo a esa raíz.
     output: build/app/outputs/flutter-apk/app-release.apk
@@ -43,5 +43,5 @@ Builds:
 # Habilita actualizaciones automáticas de versión leyendo pubspec.yaml.
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
-CurrentVersion: 0.1.0
-CurrentVersionCode: 1
+CurrentVersion: 0.1.1
+CurrentVersionCode: 2

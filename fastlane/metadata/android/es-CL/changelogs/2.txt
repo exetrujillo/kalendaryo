@@ -1,0 +1,1 @@
+Arreglo: la app no abría la base de datos en el dispositivo (carga de la librería nativa de SQLCipher). El registro de eventos ya funciona.

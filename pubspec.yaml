@@ -4,7 +4,7 @@
 name: kalendaryo
 description: "Cuenta regresiva de eventos en la pantalla de inicio. 100% local y libre."
 publish_to: "none" # No se publica en pub.dev; distribución vía F-Droid.
-version: 0.1.0+1
+version: 0.1.1+2
 
 environment:
   sdk: ">=3.4.0 <4.0.0"
