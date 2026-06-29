@@ -17,8 +17,10 @@ dependencies:
   # Persistencia local cifrada (todo FOSS, sin servicios del SO propietarios)
   drift: ^2.18.0
   sqlite3: ^2.4.0 # API `open.overrideFor`/`OperatingSystem` (open.dart) p/ SQLCipher
-  sqlite3_flutter_libs: ^0.5.20
-  sqlcipher_flutter_libs: ^0.6.0 # SQLCipher: cifrado AES-256 de la BD
+  # OJO: NO añadir `sqlite3_flutter_libs`. Choca con `sqlcipher_flutter_libs`
+  # (ambos traen la clase nativa Sqlite3FlutterLibsPlugin -> dex duplicado). Con
+  # cifrado se usa solo el de SQLCipher, que ya provee las libs nativas.
+  sqlcipher_flutter_libs: ^0.6.0 # SQLCipher: cifrado AES-256 de la BD (libs nativas)
   flutter_secure_storage: ^9.2.0 # Guarda la clave en el Android Keystore
 
   # Puente app <-> widget nativo (MIT, sin dependencias de Google)

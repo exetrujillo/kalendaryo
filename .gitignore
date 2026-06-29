@@ -7,7 +7,9 @@
 build/
 .flutter-plugins
 .flutter-plugins-dependencies
-*.g.dart        # código generado por drift/build_runner (se regenera en build)
+# código generado por drift/build_runner (se regenera en build)
+# (el comentario va en su propia línea: .gitignore no admite comentarios inline)
+*.g.dart
 coverage/
 
 # Android
@@ -16,6 +18,8 @@ android/local.properties
 android/key.properties
 *.keystore
 *.jks
+# Generado por Flutter en cada pub get/build (no se versiona)
+**/GeneratedPluginRegistrant.*
 
 # IDE
 .idea/
