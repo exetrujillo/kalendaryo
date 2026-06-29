@@ -19,7 +19,7 @@ Este documento describe cómo garantizamos ese determinismo.
 | Bloque de firma (`META-INF/`) | Depende de la clave; F-Droid re-firma | La verificación compara el contenido **excluyendo `META-INF/`** |
 | Ofuscación / shrink | R8 puede introducir variación | `minifyEnabled = false`, `shrinkResources = false` |
 | Jetifier | Reescritura no determinista de libs | `android.enableJetifier=false` (todo es AndroidX puro) |
-| Toolchain | Versiones distintas -> bytes distintos | Pinned: Gradle 8.7, AGP 8.3.0, Kotlin 1.9.23, JDK 17, Flutter `stable` |
+| Toolchain | Versiones distintas -> bytes distintos | Pinned: Gradle 8.14, AGP 8.7.3, Kotlin 2.1.0, JVM 17, Flutter `stable` |
 
 ## Sin red, sin GMS
 
