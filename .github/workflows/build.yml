@@ -23,8 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Versión de Flutter PINNEADA (no `channel: stable` flotante): garantiza
+      # builds reproducibles en el tiempo y evita que un nuevo stable rompa el CI.
       - uses: subosito/flutter-action@v2
         with:
+          flutter-version: 3.44.4
           channel: stable
 
       - run: flutter pub get

@@ -28,7 +28,7 @@ Builds:
     # es donde `flutter build` debe ejecutarse. `output` es relativo a esa raíz.
     output: build/app/outputs/flutter-apk/app-release.apk
     srclibs:
-      - flutter@stable
+      - flutter@3.44.4   # PINNEADO (no stable flotante) para builds reproducibles
     rm:
       - android/app/google-services.json   # garantía: no debe existir
     prebuild:

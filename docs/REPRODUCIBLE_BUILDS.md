@@ -19,7 +19,8 @@ Este documento describe cómo garantizamos ese determinismo.
 | Bloque de firma (`META-INF/`) | Depende de la clave; F-Droid re-firma | La verificación compara el contenido **excluyendo `META-INF/`** |
 | Ofuscación / shrink | R8 puede introducir variación | `minifyEnabled = false`, `shrinkResources = false` |
 | Jetifier | Reescritura no determinista de libs | `android.enableJetifier=false` (todo es AndroidX puro) |
-| Toolchain | Versiones distintas -> bytes distintos | Pinned: Gradle 8.14, AGP 8.7.3, Kotlin 2.1.0, JVM 17, Flutter `stable` |
+| Toolchain | Versiones distintas -> bytes distintos | Pinned: Gradle 8.14, AGP 8.7.3, Kotlin 2.1.0, JVM 17, **Flutter 3.44.4** (no `stable` flotante) |
+| Dependencias Dart | Resolución variable en el tiempo | `pubspec.lock` versionado |
 
 ## Sin red, sin GMS
 
@@ -54,7 +55,8 @@ diff -r /tmp/a /tmp/b && echo "Reproducible ✔"
 
 - **Sin `subdir`**: el proyecto Flutter (`pubspec.yaml`) vive en la raíz del
   repo; ahí debe ejecutarse `flutter build`. `output` es relativo a esa raíz.
-- `srclibs: flutter@stable` provee el SDK; el NDK lo fija `flutter.ndkVersion`.
+- `srclibs: flutter@3.44.4` (pinneado) provee el SDK; el NDK lo fija
+  `flutter.ndkVersion` (28.2.13676358 en esta versión de Flutter).
 - No se requiere `sudo`/`lib32stdc++6`: Flutter stable moderno trae binarios de
   64 bits. (Si una compilación en el buildserver de F-Droid se quejara de libs
   de 32 bits, reintroducir `sudo: apt-get install -y lib32stdc++6`.)
