@@ -20,6 +20,16 @@ if (localPropertiesFile.exists()) {
 def flutterVersionCode = localProperties.getProperty("flutter.versionCode") ?: "1"
 def flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "0.1.0"
 
+// Firma de release OPCIONAL: si existe android/key.properties (no versionado; lo
+// crea el CI desde secrets), se firma con esa clave; si no, se cae a debug. Así
+// F-Droid y los builds locales siguen compilando sin secrets, y solo el Release
+// de GitHub se firma con la clave propia.
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withReader("UTF-8") { keystoreProperties.load(it) }
+}
+
 android {
     namespace = "cl.exetrujillo.kalendaryo"
     // compileSdk 35: lo exigen plugins transitivos (jni, sqlite3_flutter_libs).
@@ -53,13 +63,23 @@ android {
         includeInBundle = false
     }
 
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                keyAlias = keystoreProperties["keyAlias"]
+                keyPassword = keystoreProperties["keyPassword"]
+                storeFile = keystoreProperties["storeFile"] ? file(keystoreProperties["storeFile"]) : null
+                storePassword = keystoreProperties["storePassword"]
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // Firma con la clave de debug SOLO para `flutter run --release` local.
-            // F-Droid reconstruye y firma con SU propia clave; aquí NO se incrusta
-            // ningún keystore propio. Sin minify/shrink => build reproducible y
-            // auditable byte a byte por F-Droid.
-            signingConfig = signingConfigs.debug
+            // Con key.properties (CI/secrets) firma con la clave de release; si no,
+            // con debug (F-Droid re-firma; aquí no se embebe keystore propio).
+            // Sin minify/shrink => build reproducible y auditable byte a byte.
+            signingConfig = keystorePropertiesFile.exists() ? signingConfigs.release : signingConfigs.debug
             minifyEnabled = false
             shrinkResources = false
         }
