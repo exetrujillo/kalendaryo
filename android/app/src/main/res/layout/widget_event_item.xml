@@ -13,11 +13,12 @@ SPDX-License-Identifier: GPL-3.0-or-later
     android:minHeight="48dp">
 
     <!-- Indicador de color -->
-    <View
+    <ImageView
         android:id="@+id/item_color"
         android:layout_width="4dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="12dp"
+        android:contentDescription="@null"
         android:background="#FFFFFF" />
 
     <!-- Título y etiqueta de días -->

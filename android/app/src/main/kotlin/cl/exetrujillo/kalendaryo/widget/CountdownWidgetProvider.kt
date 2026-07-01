@@ -75,7 +75,14 @@ class CountdownWidgetProvider : AppWidgetProvider() {
                         val targetEpochDay = eventObj.getLong("target_epoch_day")
                         days = (targetEpochDay - todayEpoch).toInt()
                     }
-                    val color = if (eventObj.isNull("color")) android.graphics.Color.WHITE else eventObj.getInt("color")
+                    // El color es un ARGB opaco (p.ej. 0xFFE53935), que excede el rango
+                    // de un Int con signo. Lo leemos como Long y truncamos a 32 bits: ese
+                    // patrón de bits es justo el color int que espera Android.
+                    val color = if (eventObj.isNull("color")) {
+                        android.graphics.Color.WHITE
+                    } else {
+                        eventObj.getLong("color").toInt()
+                    }
                     
                     // Solo dibujamos si los días son >= 0 (no pasados)
                     if (days >= 0) {
