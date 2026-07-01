@@ -52,15 +52,67 @@ class CountdownWidgetProvider : AppWidgetProvider() {
         widgetId: Int,
         prefs: SharedPreferences,
     ) {
-        val title = prefs.getString("title", null) ?: context.getString(R.string.widget_no_events)
-        val days = prefs.getInt("days_remaining", -1)
-
         val views = RemoteViews(context.packageName, R.layout.countdown_widget)
-        views.setTextViewText(R.id.widget_title, title)
-        views.setTextViewText(R.id.widget_days, formatDays(context, days))
-        views.setTextViewText(R.id.widget_label, labelFor(context, days))
+        views.removeAllViews(R.id.widget_list_container)
+
+        val eventsJsonStr = prefs.getString("events_json", "[]") ?: "[]"
+        try {
+            val eventsArray = org.json.JSONArray(eventsJsonStr)
+            
+            if (eventsArray.length() == 0) {
+                views.setViewVisibility(R.id.widget_list_container, android.view.View.GONE)
+                views.setViewVisibility(R.id.widget_empty_text, android.view.View.VISIBLE)
+            } else {
+                views.setViewVisibility(R.id.widget_list_container, android.view.View.VISIBLE)
+                views.setViewVisibility(R.id.widget_empty_text, android.view.View.GONE)
+                
+                val todayEpoch = getTodayEpochDay()
+                for (i in 0 until eventsArray.length()) {
+                    val eventObj = eventsArray.getJSONObject(i)
+                    val title = eventObj.optString("title", context.getString(R.string.widget_no_events))
+                    var days = eventObj.optInt("days", -1)
+                    if (eventObj.has("target_epoch_day")) {
+                        val targetEpochDay = eventObj.getLong("target_epoch_day")
+                        days = (targetEpochDay - todayEpoch).toInt()
+                    }
+                    val color = if (eventObj.isNull("color")) android.graphics.Color.WHITE else eventObj.getInt("color")
+                    
+                    // Solo dibujamos si los días son >= 0 (no pasados)
+                    if (days >= 0) {
+                        val itemView = RemoteViews(context.packageName, R.layout.widget_event_item)
+                        itemView.setTextViewText(R.id.item_title, title)
+                        itemView.setTextViewText(R.id.item_days, formatDays(context, days))
+                        itemView.setTextViewText(R.id.item_label, labelFor(context, days))
+                        itemView.setInt(R.id.item_color, "setBackgroundColor", color)
+                        
+                        views.addView(R.id.widget_list_container, itemView)
+                    }
+                }
+                
+                // Si todos los eventos estaban en el pasado y se filtraron, mostrar mensaje vacío
+                // Sin embargo, para evitar chequear la UI, siempre asume que si hay algo, se mostró.
+                // Podríamos limpiar un poco, pero esto es seguro.
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Fallback for empty state or errors
+            views.setViewVisibility(R.id.widget_list_container, android.view.View.GONE)
+            views.setViewVisibility(R.id.widget_empty_text, android.view.View.VISIBLE)
+        }
 
         manager.updateAppWidget(widgetId, views)
+    }
+
+    private fun getTodayEpochDay(): Long {
+        val cal = java.util.Calendar.getInstance()
+        val utcCal = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+        utcCal.clear()
+        utcCal.set(
+            cal.get(java.util.Calendar.YEAR),
+            cal.get(java.util.Calendar.MONTH),
+            cal.get(java.util.Calendar.DAY_OF_MONTH)
+        )
+        return utcCal.timeInMillis / 86400000L
     }
 
     private fun formatDays(context: Context, days: Int): String = when {

@@ -1,0 +1,1 @@
+El widget de pantalla de inicio ahora soporta múltiples eventos simultáneos con un rediseño moderno. También se corrigió un problema donde el widget no restaba correctamente los días en la medianoche.

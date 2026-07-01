@@ -4,41 +4,38 @@ SPDX-FileCopyrightText: 2026 Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>
 SPDX-License-Identifier: GPL-3.0-or-later
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="8dp"
+    android:padding="16dp"
     android:background="@drawable/widget_background">
 
     <TextView
-        android:id="@+id/widget_days"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorPrimary"
-        tools:ignore="HardcodedText"
-        android:text="0" />
-
-    <TextView
-        android:id="@+id/widget_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:text="@string/widget_day_plural" />
-
-    <TextView
-        android:id="@+id/widget_title"
+        android:id="@+id/widget_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Próximos Eventos"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="12dp"
+        android:textAllCaps="true" />
+
+    <LinearLayout
+        android:id="@+id/widget_list_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+        
+    <TextView
+        android:id="@+id/widget_empty_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:textSize="12sp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:text="@string/widget_no_events" />
+        android:text="@string/widget_no_events"
+        android:textColor="#B3FFFFFF"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -11,6 +11,14 @@ Todas las modificaciones notables se documentan aquí. El formato sigue
 
 ## [No publicado]
 
+## [0.1.2] - 2026-07-01
+
+### Añadido
+- El widget de pantalla de inicio ahora lista múltiples eventos (hasta 4) de forma simultánea.
+- Rediseño visual del widget a un estilo más moderno (fondo oscuro redondeado semi-transparente, textos mejor contrastados).
+
+### Corregido
+- El widget ahora recalcula correctamente los días restantes a medianoche, usando la fecha absoluta del evento y no el número estático del momento en que se guardó.
 ## [0.1.1] - 2026-06-29
 
 ### Corregido

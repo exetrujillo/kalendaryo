@@ -5,9 +5,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="110dp"
-    android:minHeight="40dp"
+    android:minHeight="110dp"
     android:targetCellWidth="2"
-    android:targetCellHeight="1"
+    android:targetCellHeight="2"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
     android:initialLayout="@layout/countdown_widget"

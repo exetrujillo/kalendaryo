@@ -1,9 +1,11 @@
 // SPDX-FileCopyrightText: 2026 Exequiel Trujillo <exequiel.trujillo@ug.uchile.cl>
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import 'dart:convert';
 import 'package:home_widget/home_widget.dart';
 
 import '../domain/usecases/get_countdowns.dart';
+import '../core/utils/date_diff.dart';
 
 /// Puente entre la app Flutter y el widget nativo de Android.
 ///
@@ -16,24 +18,39 @@ class HomeWidgetBridge {
       'cl.exetrujillo.kalendaryo.widget.CountdownWidgetProvider';
 
   static Future<void> sync(List<Countdown> countdowns) async {
-    final next = countdowns
+    final upcoming = countdowns
         .where((c) => c.daysRemaining >= 0)
-        .fold<Countdown?>(null, (best, c) {
-      if (best == null || c.daysRemaining < best.daysRemaining) return c;
-      return best;
-    });
+        .toList()
+      ..sort((a, b) => a.daysRemaining.compareTo(b.daysRemaining));
+
+    // Listar los próximos 4 eventos para evitar que el widget colapse en espacio
+    final top = upcoming.take(4).toList();
+
+    // Codificamos a JSON para pasarlo a Kotlin
+    final jsonList = top.map((c) => {
+      'title': c.event.title,
+      'days': c.daysRemaining,
+      'target_epoch_day': DateDiff.toEpochDay(c.event.targetDate),
+      'color': c.event.colorArgb,
+    }).toList();
 
     await HomeWidget.saveWidgetData<String>(
+      'events_json',
+      jsonEncode(jsonList),
+    );
+
+    // Mantenemos los antiguos para retrocompatibilidad por si se actualiza a medias
+    await HomeWidget.saveWidgetData<String>(
       'title',
-      next?.event.title ?? 'Sin eventos',
+      top.isNotEmpty ? top.first.event.title : 'Sin eventos',
     );
     await HomeWidget.saveWidgetData<int>(
       'days_remaining',
-      next?.daysRemaining ?? -1,
+      top.isNotEmpty ? top.first.daysRemaining : -1,
     );
     await HomeWidget.saveWidgetData<int?>(
       'color_argb',
-      next?.event.colorArgb,
+      top.isNotEmpty ? top.first.event.colorArgb : null,
     );
 
     await HomeWidget.updateWidget(
